@@ -1,18 +1,20 @@
 server {
-        listen 80;
-        listen [::]:80;
+ listen 80;
 
 
-        root /ruta/absoluta/archivo/index;
 
 
-        index index.html index.htm index.nginx-debian.html;
+ server_name proxy_app;
 
 
-        server_name nombre_web;
 
 
-        location / {
-                try_files $uri $uri/ =404;
-        }
+  location / {
+     proxy_pass http://<IP_de_la_maquina1>:5000;
+     proxy_set_header Host $host;
+     proxy_set_header X-Real-IP $remote_addr;
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_set_header X-Forwarded-Proto $scheme;
+  }
 }
+
